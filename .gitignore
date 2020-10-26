@@ -1,0 +1,11 @@
+./vscode
+.DS_Store
+.DS_Store/
+
+biology_analysis/data/
+biology_analysis/output/*.xlsx
+chromedriver
+
+zdm_public_opinion_analysis/hwenv
+
+__pycache__/

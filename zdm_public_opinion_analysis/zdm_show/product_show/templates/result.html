@@ -1,0 +1,161 @@
+{% extends "base_layout.html" %} {% block title %}欢迎{% endblock %}
+{% load static %}
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+    <link rel="stylesheet" href="{% static 'css/morris.css' %}">
+{% endblock %} 
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{ page_name }}</h1>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-comments fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ counter }}</div>
+                        <div>评论数量</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ sent_avg }}</div>
+                        <div>情感倾向</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-thumbs-up fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ plus }}</div>
+                        <div>正向数量</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-thumbs-down fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">{{ minus }}</div>
+                        <div>负向数量</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-8">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> 舆情数据展示
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover table-striped" id="dataTables-details">
+                                <thead>
+                                    <tr>
+                                        <th>商品名</th>
+                                        <th>用户名</th>
+                                        <th>评论</th>
+                                        <th>情感倾向</th>
+                                        <th>记录时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for content in contents %}
+                                        <tr>
+                                            <td>{{content.product_name}}</td>
+                                            <td>{{content.user_name}}</td>
+                                            <td>{{content.user_comment}}</td>
+                                            <td>{{content.sentiment|floatformat:2}}</td>
+                                            <td width="17%">{{content.create_time|date:"Y-m-d H:i:s"}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.col-lg-4 (nested) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+
+    </div>
+
+    <!-- /.col-lg-8 -->
+    <div class="col-lg-4">
+        <div>
+            <div id="lg05" style="display: none">{{ plus }}</div>
+            <div id="lt05" style="display: none">{{ minus }}</div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> 情感倾向
+            </div>
+            <div class="panel-body">
+                <div id="morris-donut-chart"></div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-4 -->
+</div>
+<!-- /.row -->
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/raphael-min.js' %}"></script>
+    <script src="{% static 'js/morris.min.js' %}"></script>
+    <script src="{% static 'js/morris-data.js' %}"></script>
+    <script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.bootstrap.min.js' %}"></script>
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-details').DataTable({
+            "responsive": true,
+        });
+    });
+    </script>
+{% endblock %}
